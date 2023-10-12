@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 import cmd
-from turtle import bye
 
 
 class HBNBCommand(cmd.Cmd):
