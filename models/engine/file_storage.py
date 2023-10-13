@@ -11,13 +11,8 @@ class FileStorage:
         __file_path (str): The path to the JSON file used for storage.
         __objects (dict): A dictionary that stores objects in memory.
     """
-
-    def __init__(self):
-        """
-        Initializes a new FileStorage instance.
-        """
-        self.__file_path = "file.json"
-        self.__objects = dict()
+    __file_path = "file.json"
+    __objects = dict()
 
     def all(self):
         """
@@ -26,7 +21,7 @@ class FileStorage:
         Returns:
             dict: A dictionary of objects.
         """
-        return self.__objects
+        return FileStorage.__objects
 
     def new(self, obj):
         """
@@ -35,15 +30,16 @@ class FileStorage:
         Args:
             obj (object): The object to be added.
         """
-        key = "{}.{}".format(obj["__class__"], obj["id"])
-        self.__objects[key] = obj
+        key = "{}.{}".format(obj.__class__.__name__, obj.id)
+        FileStorage.__objects[key] = obj
 
     def save(self):
         """
             Saves objects to the JSON file.
         """
-        with open(self.__file_path, "w") as file:
-            json.dump(self.__objects, file)
+        with open(FileStorage.__file_path, "w") as file:
+            data = {key: value.to_dict() for key, value in FileStorage.__objects.items()}
+            json.dump(data, file)
 
     def reload(self):
         """
@@ -51,6 +47,9 @@ class FileStorage:
 
         If the JSON file does not exist, no action is taken.
         """
-        if os.path.exists(self.__file_path):
-            with open(self.__file_path, "r") as file:
-                self.__objects = json.load(file)
+        from models.base_model import BaseModel
+        if os.path.exists(FileStorage.__file_path):
+            with open(FileStorage.__file_path, 'r') as file:
+                loaded_data = dict(json.load(file))
+                for key, value in loaded_data.items():
+                    FileStorage.__objects[key] = BaseModel(**value)

@@ -11,6 +11,7 @@ class BaseModel:
         """Initialize a BaseModel object."""
         if kwargs:
             for key, value in kwargs.items():
+                # datetime BUG when reloading multiple times
                 if key != '__class__':
                     if key == 'created_at' or key == 'updated_at':
                         setattr(self, key, datetime.strptime(
@@ -21,7 +22,7 @@ class BaseModel:
             self.id = str(uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
-            storage.new(self.to_dict())
+            storage.new(self)
 
     def __str__(self):
         """Return a string representation of the object."""
