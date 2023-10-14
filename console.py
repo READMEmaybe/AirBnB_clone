@@ -1,15 +1,21 @@
 #!/usr/bin/python3
 from ast import arg
 import cmd
+from models import storage
 from models.base_model import BaseModel
 from models.user import User
-from models import storage
+from models.state import State
+from models.city import City
+from models.place import Place
+from models.amenity import Amenity
+from models.review import Review
 
 
 class HBNBCommand(cmd.Cmd):
 
     prompt = '(hbnb) '
-    classes = ['BaseModel', 'User']
+    classes = ['BaseModel', 'User', 'State',
+               'City', 'Place', 'Amenity', 'Review']
 
     def do_quit(self, args):
         'Quit command to exit the program\n'
@@ -129,7 +135,17 @@ class HBNBCommand(cmd.Cmd):
             elif not value:
                 print("** value missing **")
             else:
-                storage.all()[key].__dict__[attribute] = value.replace('"', "")
+                value = args[3].replace('"', "").strip()
+                if value.isdigit():
+                    value = int(value)
+                elif value.replace(".", "", 1).isdigit():
+                    value = float(value)
+                else:
+                    try:
+                        value = str(value)
+                    except ValueError:
+                        pass 
+                storage.all()[key].__dict__[attribute] = value
                 storage.save()
 
 
