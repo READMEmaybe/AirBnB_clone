@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+from ast import arg
 import cmd
 from models.base_model import BaseModel
 from models import storage
@@ -95,10 +96,41 @@ class HBNBCommand(cmd.Cmd):
             print([str(value) for key, value in storage.all().items()])
 
     def do_update(self, arg):
-        # parse arg into: <class_name> <id> <attribute_name> <attribute_value>
-        # check each token if it's missing
-        # update the attribute_name with the new attribute_value
-        pass
+        """ 
+        Updates an instance        
+        Usage: update <class name> <id> <attribute name> "<attribute value>" 
+        """
+        args = arg.split()
+        # looks ugly hahaha
+        classname = args[0] if len(args) > 0 else None
+        uid = args[1] if len(args) > 1 else None
+        attribute = args[2] if len(args) > 2 else None
+        value = args[3] if len(args) > 3 else None
+
+        if not classname:
+            print("** class name missing **")
+        elif classname != "BaseModel":
+            print("** class doesn't exist **")
+        elif not uid:
+            print("** instance id missing **")
+        else:
+            key = "{}.{}".format(classname, uid)
+            if key not in storage.all():
+                print("** no instance found **")
+            elif not attribute:
+                print("** attribute name missing **")
+            elif not value:
+                print("** value missing **")
+            else:
+                try:
+                    if "." in value:
+                        value = float(value)
+                    else:
+                        value = int(value)
+                except ValueError:
+                    pass
+                setattr(storage.all()[key], attribute, value)
+                storage.all()[key].save()
 
 
 if __name__ == '__main__':
