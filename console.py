@@ -24,16 +24,18 @@ class HBNBCommand(cmd.Cmd):
         pass
     
     def do_create(self, arg):
-        """ """
+        """
+        Creates a new instance of BaseModel, saves it (to the JSON file) and prints the id
+        Usage: create <class_name>
+        """
         if not arg:
             print("** class name missing **")
-            return
         elif arg != "BaseModel":
             print("** class doesn't exist **")
-            return
-        new = BaseModel()
-        print(new.id)
-        storage.save()
+        else:
+            new = BaseModel()
+            print(new.id)
+            storage.save()
     
     def do_show(self, arg):
         """
