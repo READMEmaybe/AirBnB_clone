@@ -2,11 +2,14 @@
 from ast import arg
 import cmd
 from models.base_model import BaseModel
+from models.user import User
 from models import storage
 
 
 class HBNBCommand(cmd.Cmd):
+
     prompt = '(hbnb) '
+    classes = ['BaseModel', 'User']
 
     def do_quit(self, args):
         'Quit command to exit the program\n'
@@ -26,16 +29,16 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, arg):
         """
-        Creates a new instance of BaseModel,
+        Creates a new instance of a class,
         saves it (to the JSON file) and prints the id
         Usage: create <class_name>
         """
         if not arg:
             print("** class name missing **")
-        elif arg != "BaseModel":
+        elif arg not in HBNBCommand.classes:
             print("** class doesn't exist **")
         else:
-            new = BaseModel()
+            new = eval(arg+"()")
             print(new.id)
             storage.save()
 
@@ -48,7 +51,7 @@ class HBNBCommand(cmd.Cmd):
         args = arg.split()
         if len(args) == 0:
             print("** class name missing **")
-        elif args[0] != "BaseModel":
+        elif args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
         elif len(args) == 1:
             print("** class id missing **")
@@ -67,7 +70,7 @@ class HBNBCommand(cmd.Cmd):
         args = arg.split()
         if len(args) == 0:
             print("** class name missing **")
-        elif args[0] != "BaseModel":
+        elif args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
         elif len(args) == 1:
             print("** class id missing **")
@@ -88,7 +91,7 @@ class HBNBCommand(cmd.Cmd):
         if arg != "":
             args = arg.split(' ')
             className = args[0]
-            if className != "BaseModel":
+            if className not in HBNBCommand.classes:
                 print("** class doesn't exist **")
             else:
                 output = []
@@ -113,7 +116,7 @@ class HBNBCommand(cmd.Cmd):
 
         if not classname:
             print("** class name missing **")
-        elif classname != "BaseModel":
+        elif classname not in HBNBCommand.classes:
             print("** class doesn't exist **")
         elif not uid:
             print("** instance id missing **")
