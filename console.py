@@ -22,7 +22,7 @@ class HBNBCommand(cmd.Cmd):
 
     def emptyline(self):
         pass
-    
+
     def do_create(self, arg):
         """
         Creates a new instance of BaseModel, saves it (to the JSON file) and prints the id
@@ -36,7 +36,7 @@ class HBNBCommand(cmd.Cmd):
             new = BaseModel()
             print(new.id)
             storage.save()
-    
+
     def do_show(self, arg):
         """
         Prints the string representation of an instance based on the class name and id
@@ -75,17 +75,30 @@ class HBNBCommand(cmd.Cmd):
                 print("** no instance found **")
 
     def do_all(self, arg):
-        # check if class name exits
-        # if class name is not missing: print __objects of said class
-        # else: print all __objects of all classes
-        pass
-    
+        """ 
+        Prints all string representation of all instances based or not on the class name. 
+        Usage: all [<class_name>]
+        class_name is an optional parameter
+        """
+        if arg != "":
+            args = arg.split(' ')
+            className = args[0]
+            if className != "BaseModel":
+                print("** class doesn't exist **")
+            else:
+                output = []
+                for key, value in storage.all().items():
+                    if type(value).__name__ == className:
+                        output.append(str(value))
+                print(output)
+        else:
+            print([str(value) for key, value in storage.all().items()])
+
     def do_update(self, arg):
         # parse arg into: <class_name> <id> <attribute_name> <attribute_value>
         # check each token if it's missing
         # update the attribute_name with the new attribute_value
         pass
-        
 
 
 if __name__ == '__main__':
