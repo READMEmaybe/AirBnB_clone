@@ -26,7 +26,8 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, arg):
         """
-        Creates a new instance of BaseModel, saves it (to the JSON file) and prints the id
+        Creates a new instance of BaseModel,
+        saves it (to the JSON file) and prints the id
         Usage: create <class_name>
         """
         if not arg:
@@ -40,7 +41,8 @@ class HBNBCommand(cmd.Cmd):
 
     def do_show(self, arg):
         """
-        Prints the string representation of an instance based on the class name and id
+        Prints the string representation of an instance
+        based on the class name and id
         Usage: show <class_name> <id>
         """
         args = arg.split()
@@ -58,7 +60,8 @@ class HBNBCommand(cmd.Cmd):
 
     def do_destroy(self, arg):
         """
-        Deletes an instance based on the class name and id (save the change into the JSON file).
+        Deletes an instance based on the class name and id
+        (save the change into the JSON file).
         Usage: destroy <class_name> <id>
         """
         args = arg.split()
@@ -76,8 +79,9 @@ class HBNBCommand(cmd.Cmd):
                 print("** no instance found **")
 
     def do_all(self, arg):
-        """ 
-        Prints all string representation of all instances based or not on the class name. 
+        """
+        Prints all string representation of all instances
+        based or not on the class name.
         Usage: all [<class_name>]
         class_name is an optional parameter
         """
@@ -96,9 +100,9 @@ class HBNBCommand(cmd.Cmd):
             print([str(value) for key, value in storage.all().items()])
 
     def do_update(self, arg):
-        """ 
-        Updates an instance        
-        Usage: update <class name> <id> <attribute name> "<attribute value>" 
+        """
+        Updates an instance
+        Usage: update <class name> <id> <attribute name> "<attribute value>"
         """
         args = arg.split()
         # looks ugly hahaha
@@ -122,15 +126,8 @@ class HBNBCommand(cmd.Cmd):
             elif not value:
                 print("** value missing **")
             else:
-                try:
-                    if "." in value:
-                        value = float(value)
-                    else:
-                        value = int(value)
-                except ValueError:
-                    pass
-                setattr(storage.all()[key], attribute, value)
-                storage.all()[key].save()
+                storage.all()[key].__dict__[attribute] = value.replace('"', "")
+                storage.save()
 
 
 if __name__ == '__main__':

@@ -38,7 +38,8 @@ class FileStorage:
             Saves objects to the JSON file.
         """
         with open(FileStorage.__file_path, "w") as file:
-            data = {key: value.to_dict() for key, value in FileStorage.__objects.items()}
+            data = {key: value.to_dict()
+                    for key, value in FileStorage.__objects.items()}
             json.dump(data, file)
 
     def reload(self):
