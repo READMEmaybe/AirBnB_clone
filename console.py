@@ -36,13 +36,22 @@ class HBNBCommand(cmd.Cmd):
         storage.save()
     
     def do_show(self, arg):
-        # parse arg for class name and id
-        # check if class name is missing
-        # check if class name doesn't exist
-        # check if id is missing
-        # check if check if id exists
-        # print __objects of said instance
-        pass
+        """
+        Prints the string representation of an instance based on the class name and id
+        Usage: show <class_name> <id>
+        """
+        args = arg.split()
+        if len(args) == 0:
+            print("** class name missing **")
+        elif args[0] != "BaseModel":
+            print("** class doesn't exist **")
+        elif len(args) == 1:
+            print("** class id missing **")
+        else:
+            try:
+                print(storage.all()[args[0]+"."+args[1]])
+            except KeyError:
+                print("** no instance found **")
 
     def do_destroy(self, arg):
         # parse arg for class name and id
