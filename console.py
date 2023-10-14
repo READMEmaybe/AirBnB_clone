@@ -129,7 +129,7 @@ class HBNBCommand(cmd.Cmd):
                         value = int(value)
                 except ValueError:
                     pass
-                setattr(storage.all()[key], attribute, value)
+                setattr(storage.all()[key], attribute, value.replace('"',""))
                 storage.all()[key].save()
 
 
