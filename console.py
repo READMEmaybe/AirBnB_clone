@@ -164,8 +164,7 @@ class HBNBCommand(cmd.Cmd):
     def default(self, arg):
         """Handle unknown commands."""
         """nvm its working 100%"""
-        """TODO: add support to dict for update"""
-        """TODO: count function"""
+        """TODO: add support to dict input for update"""
         funcs = {
             "all": self.do_all,
             "show": self.do_show,
