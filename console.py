@@ -2,6 +2,7 @@
 """HBNBCommand module"""
 from ast import arg
 import cmd
+import re
 from models import storage
 from models.base_model import BaseModel
 from models.user import User
@@ -18,12 +19,12 @@ class HBNBCommand(cmd.Cmd):
     classes = ['BaseModel', 'User', 'State',
                'City', 'Place', 'Amenity', 'Review']
 
-    def do_EOF(self, args):
+    def do_EOF(self, arg):
         """Quit command to exit the program\n"""
         print()
         return True
 
-    def do_quit(self, args):
+    def do_quit(self, arg):
         """Quit command to exit the program\n"""
         return True
 
@@ -112,7 +113,6 @@ class HBNBCommand(cmd.Cmd):
         Usage: update <class name> <id> <attribute name> "<attribute value>"
         """
         args = arg.split()
-        # looks ugly hahaha
         classname = args[0] if len(args) > 0 else None
         uid = args[1] if len(args) > 1 else None
         attribute = args[2] if len(args) > 2 else None
@@ -145,6 +145,34 @@ class HBNBCommand(cmd.Cmd):
                         pass
                 storage.all()[key].__dict__[attribute] = value
                 storage.save()
+
+    def default(self, arg):
+        """Handle unknown commands."""
+        """i think its clean workaround but"""
+        """TODO: Needs more testing"""
+        funcs = {
+            "all": self.do_all,
+            "show": self.do_show,
+            "destroy": self.do_destroy,
+            "update": self.do_update
+        }
+        try:
+            pattern = r'(\w+)\.(\w+)\((.*?)\)'
+            matches = re.search(pattern, arg)
+            if matches:
+                className = matches.group(1)
+                functionName = matches.group(2)
+                if className not in HBNBCommand.classes:
+                    raise NameError()
+                elif not funcs[functionName]:
+                    raise NameError()
+                args = "{} {}".format(className, re.sub(
+                    r'["{},]', '', matches.group(3)))
+                return funcs[functionName](args)
+            else:
+                raise Exception()
+        except:
+            print("** Unknown syntax **")
 
 
 if __name__ == '__main__':
