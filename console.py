@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+"""HBNBCommand module"""
 from ast import arg
 import cmd
 from models import storage
@@ -17,20 +18,17 @@ class HBNBCommand(cmd.Cmd):
     classes = ['BaseModel', 'User', 'State',
                'City', 'Place', 'Amenity', 'Review']
 
-    def do_quit(self, args):
-        'Quit command to exit the program\n'
-        return True
-
     def do_EOF(self, args):
-        'Quit command to exit the program\n'
+        """Quit command to exit the program\n"""
+        print()
         return True
 
-    def postcmd(self, stop, line):
-        if line == 'EOF':
-            return True
-        return stop
+    def do_quit(self, args):
+        """Quit command to exit the program\n"""
+        return True
 
     def emptyline(self):
+        """skip empty lines"""
         pass
 
     def do_create(self, arg):
@@ -144,7 +142,7 @@ class HBNBCommand(cmd.Cmd):
                     try:
                         value = str(value)
                     except ValueError:
-                        pass 
+                        pass
                 storage.all()[key].__dict__[attribute] = value
                 storage.save()
 
