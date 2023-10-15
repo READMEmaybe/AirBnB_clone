@@ -107,6 +107,21 @@ class HBNBCommand(cmd.Cmd):
         else:
             print([str(value) for key, value in storage.all().items()])
 
+    def do_count(self, arg):
+        """
+        count instances of a class
+        Usage: count <class_name>
+        """
+        args = arg.split()
+        className = args[0] if len(args) > 0 else None
+        if not className:
+            print("** class name missing **")
+        elif className not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+        else:
+            print(len([k for k in storage.all() if k.startswith(
+                className + '.')]))
+
     def do_update(self, arg):
         """
         Updates an instance
@@ -155,7 +170,8 @@ class HBNBCommand(cmd.Cmd):
             "all": self.do_all,
             "show": self.do_show,
             "destroy": self.do_destroy,
-            "update": self.do_update
+            "update": self.do_update,
+            "count": self.do_count
         }
         try:
             pattern = r'(\w+)\.(\w+)\((.*?)\)'
