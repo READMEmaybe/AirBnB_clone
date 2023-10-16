@@ -59,7 +59,7 @@ class HBNBCommand(cmd.Cmd):
         elif args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
         elif len(args) == 1:
-            print("** class id missing **")
+            print("** instance id missing **")
         else:
             try:
                 print(storage.all()[args[0]+"."+args[1]])
@@ -78,7 +78,7 @@ class HBNBCommand(cmd.Cmd):
         elif args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
         elif len(args) == 1:
-            print("** class id missing **")
+            print("** instance id missing **")
         else:
             try:
                 del storage.all()[args[0]+"."+args[1]]
