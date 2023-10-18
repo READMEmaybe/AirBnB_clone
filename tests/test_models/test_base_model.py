@@ -2,9 +2,7 @@
 """Unittest module for the BaseModel Class."""
 
 import unittest
-from models import storage
 from models.base_model import BaseModel
-from models.engine.file_storage import FileStorage
 from datetime import datetime
 
 
@@ -17,7 +15,8 @@ class TestBaseModel(unittest.TestCase):
         new = BaseModel()
         self.assertIsInstance(new, BaseModel)
         self.assertIs(type(new), BaseModel)
-        self.assertEqual(str(type(new)), "<class 'models.base_model.BaseModel'>")
+        self.assertEqual(str(type(new)),
+                         "<class 'models.base_model.BaseModel'>")
         self.assertTrue(issubclass(type(new), BaseModel))
         new.name = "( ͡° ͜ʖ ͡°)"
         new.my_number = 13
@@ -62,7 +61,6 @@ class TestBaseModel(unittest.TestCase):
         self.assertTrue(obj.__class__.__name__ in obj_str)
         self.assertTrue(obj.id in obj_str)
         self.assertTrue(str(obj.__dict__) in obj_str)
-
 
 
 if __name__ == '__main__':

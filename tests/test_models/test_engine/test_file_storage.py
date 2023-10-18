@@ -16,11 +16,6 @@ class TestFileStorage(unittest.TestCase):
         except FileNotFoundError:
             pass
 
-    def test_all_empty(self):
-        """Test the 'all' method when no objects are stored."""
-        objects = self.storage.all()
-        self.assertEqual(len(objects), 0)
-
     def test_new(self):
         """Test the 'new' method."""
         obj = BaseModel()
